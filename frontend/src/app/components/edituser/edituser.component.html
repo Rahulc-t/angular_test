@@ -1,0 +1,34 @@
+<div class="container mt-5">
+    <div class="card shadow p-4" style="max-width: 600px; margin: 0 auto;">
+      <h3 class="text-center mb-4">Edit User</h3>
+  
+      <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+        
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="userId" formControlName="userId" placeholder="ID" required readonly>
+          <label for="userId">ID</label>
+        </div>
+  
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="username" formControlName="username" placeholder="Name" required>
+          <label for="username">Name</label>
+        </div>
+  
+        <div class="form-floating mb-3">
+          <input type="tel" class="form-control" id="userphone" formControlName="userphone" placeholder="Phone" required>
+          <label for="userphone">Phone</label>
+        </div>
+  
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="userplace" formControlName="userplace" placeholder="Place" required>
+          <label for="userplace">Place</label>
+        </div>
+  
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" (click)="onReset()">Reset</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!editUserForm.valid">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

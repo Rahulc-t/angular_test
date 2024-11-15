@@ -2,24 +2,20 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const verifyToken = require('../middleware/authmiddleware');
-const Asset = require('../models/assetModel'); // Updated import for the model
+const Asset = require('../models/assetModel');
 const router = express.Router();
 
 router.use(cookieParser());
 router.use(express.json());
 
-// Create a new user (POST /add-user)
-router.post("/add-user", verifyToken, async (req, res) => {
+router.post("/add-user",verifyToken ,async (req, res) => {
     try {
         const { userId, username, userphone, userplace } = req.body;
-
-        // Check if a user with the same userId already exists
         const existingUser = await Asset.findOne({ userId });
         if (existingUser) {
             return res.status(400).json({ error: "User with this ID already exists" });
         }
 
-        // Create a new user
         const newUser = new Asset({ userId, username, userphone, userplace });
         await newUser.save();
         res.status(201).json({ message: "User created successfully", user: newUser });
@@ -28,8 +24,8 @@ router.post("/add-user", verifyToken, async (req, res) => {
     }
 });
 
-// Read all users (GET /users)
-router.get("/users", verifyToken, async (req, res) => {
+// get all users 
+router.get("/users",verifyToken, async (req, res) => {
     try {
         const users = await Asset.find();
         res.status(200).json(users);
@@ -38,8 +34,8 @@ router.get("/users", verifyToken, async (req, res) => {
     }
 });
 
-// Read a single user by userId (GET /user/:userId)
-router.get("/user/:userId", verifyToken, async (req, res) => {
+// get a single user 
+router.get("/user/:userId",verifyToken, async (req, res) => {
     try {
         const user = await Asset.findOne({ userId: req.params.userId });
         if (!user) {
@@ -51,10 +47,11 @@ router.get("/user/:userId", verifyToken, async (req, res) => {
     }
 });
 
-// Update a user by userId (PUT /user/:userId)
-router.put("/edit-user/:userId", verifyToken, async (req, res) => {
+// update a user
+router.put("/edit-user/:userId",verifyToken, async (req, res) => {
     try {
         const { username, userplace, userphone } = req.body;
+        console.log("test1")
         const updatedUser = await Asset.findOneAndUpdate(
             { userId: req.params.userId },
             { username, userplace, userphone },
@@ -69,8 +66,8 @@ router.put("/edit-user/:userId", verifyToken, async (req, res) => {
     }
 });
 
-// Delete a user by userId (DELETE /user/:userId)
-router.delete("/delete-user/:userId", verifyToken, async (req, res) => {
+// delete a user 
+router.delete("/delete-user/:userId",verifyToken, async (req, res) => {
     try {
         const deletedUser = await Asset.findOneAndDelete({ userId: req.params.userId });
         if (!deletedUser) {
